@@ -238,6 +238,7 @@ public:
         Node* deleted_elem = pos.node_->next_node;
         pos.node_->next_node = deleted_elem->next_node;
         delete deleted_elem;
+        --size_;
         return Iterator{pos.node_->next_node};
     }
 
@@ -310,8 +311,11 @@ void swap(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs) noexcept {
 
 template <typename Type>
 bool operator==(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs) {
-    if (lhs.begin() == rhs.begin() && lhs.GetSize() == rhs.GetSize()) {
+    if (&lhs == &rhs) {
         return true;
+    }
+    else if (lhs.GetSize() != rhs.GetSize()) {
+        return false;
     }
     return std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin());
 }
